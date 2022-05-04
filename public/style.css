@@ -25,8 +25,8 @@ input {
   font-size: 14px;
 }
 
-button {
-  width: 600px;
+#submitMessageButton {
+  width: 400px;
   height: 50px;
   font-size: 14px;
   background: #069;
@@ -43,4 +43,15 @@ button {
   margin: 20px 0;
   border: 1px solid #ddd;
   padding: 20px;
+  overflow-y: scroll;
+}
+
+#div-SubmitTools {
+  display: flex;
+  align-items: center;
+}
+
+#uploadImageButton {
+  width: 50px;
+  margin: 10px 5px;
 }

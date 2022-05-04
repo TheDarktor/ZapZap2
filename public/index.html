@@ -18,6 +18,7 @@
   <body>
     <form id="chat">
       <input
+        id="userInput"
         class="chat-input"
         type="text"
         name="username"
@@ -25,25 +26,43 @@
       />
       <div class="messages"></div>
       <input
+        id="messageInput"
         class="chat-input"
         type="text"
         name="message"
         placeholder="Digite sua mensagem"
       />
-      <button type="submit">Enviar</button>
+      <div id="div-SubmitTools">
+        <button id="submitMessageButton" type="submit">Enviar</button>
+        <input type="file" id="uploadImageButton" />
+      </div>
     </form>
 
     <script type="text/javascript">
       var socket = io("http://localhost:3000");
 
       function renderMessage(message) {
-        $(".messages").append(
-          '<div class="message">' +
-            message.author +
-            "<strong></strong>: " +
-            message.message +
-            "</div>"
-        );
+        if (message.image != "") {
+          $(".messages").append(
+            '<div class="message">' +
+              message.author +
+              "<strong></strong>: " +
+              message.message +
+              "<br>" +
+              "<img src=" +
+              message.image +
+              " width='64px' height='64px'>" +
+              "</div>"
+          );
+        } else {
+          $(".messages").append(
+            '<div class="message">' +
+              message.author +
+              "<strong></strong>: " +
+              message.message +
+              "</div>"
+          );
+        }
       }
 
       socket.on("previousMessages", function (messages) {
@@ -62,16 +81,32 @@
         var author = $("input[name=username]").val();
         var message = $("input[name=message]").val();
 
-        if (author.length && message.length) {
+        if (author.length && (message.length || uploadedImage.length)) {
           var messageObject = {
             author: author,
             message: message,
+            image: uploadedImage,
           };
 
           renderMessage(messageObject);
 
           socket.emit("sendMessage", messageObject);
+
+          uploadedImage = "";
+          imageInput.value = "";
+          document.querySelector("#messageInput").value = "";
         }
+      });
+
+      const imageInput = document.querySelector("#uploadImageButton");
+      var uploadedImage = "";
+
+      imageInput.addEventListener("change", function () {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          uploadedImage = reader.result;
+        });
+        reader.readAsDataURL(this.files[0]);
       });
     </script>
   </body>
