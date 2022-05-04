@@ -49,9 +49,11 @@ input {
 #div-SubmitTools {
   display: flex;
   align-items: center;
+  width: 500px;
 }
 
 #uploadImageButton {
   width: 50px;
   margin: 10px 5px;
+  background: red;
 }

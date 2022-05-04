@@ -14,8 +14,89 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
 
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="uploadImage.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <!-- <Upload Image Modal> -->
+    <div
+      class="modal fade"
+      id="uploadImageModal"
+      tabindex="-1"
+      aria-labelledby="uploadImageModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadImageModalLabel">
+              Enviar imagem
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <!-- Upload  -->
+              <form id="uploadImageButton-form" class="uploader">
+                <input
+                  id="uploadImageButton"
+                  type="file"
+                  name="fileUpload"
+                  accept="image/*"
+                />
+
+                <label for="uploadImageButton" id="file-drag">
+                  <img id="file-image" src="#" alt="Preview" class="hidden" />
+                  <div id="start">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    <div>Selecione um arquivo ou arraste até aqui</div>
+                    <div id="notimage" class="hidden">
+                      Por favor selecione uma imagem
+                    </div>
+                    <span id="uploadImageButton-btn" class="btn btn-primary"
+                      >Selecione um arquivo</span
+                    >
+                  </div>
+                  <div id="response" class="hidden">
+                    <div id="messages"></div>
+                    <progress class="progress" id="file-progress" value="0">
+                      <span>0</span>%
+                    </progress>
+                  </div>
+                </label>
+              </form>
+              <!-- </InputImage> -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              onclick="closeUploadImageModal()"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- </Upload Image Modal> -->
     <form id="chat">
       <input
         id="userInput"
@@ -34,11 +115,22 @@
       />
       <div id="div-SubmitTools">
         <button id="submitMessageButton" type="submit">Enviar</button>
-        <input type="file" id="uploadImageButton" />
+        <a onclick="openImageUploadModal()">Click Me!</a>
       </div>
     </form>
-
+    <!--<script src="js/uploadImage.js"></script>-->
     <script type="text/javascript">
+      function openImageUploadModal() {
+        m = document.querySelector("#uploadImageModal");
+        uploadImageModal = new bootstrap.Modal(m);
+        uploadImageModal.show();
+      }
+
+      function closeUploadImageModal() {
+        document.querySelector("#uploadImageButton").value = "";
+        uploadedImage = "";
+      }
+
       var socket = io("http://localhost:3000");
 
       function renderMessage(message) {
@@ -105,6 +197,7 @@
         const reader = new FileReader();
         reader.addEventListener("load", () => {
           uploadedImage = reader.result;
+          uploadImageModal.hide();
         });
         reader.readAsDataURL(this.files[0]);
       });
