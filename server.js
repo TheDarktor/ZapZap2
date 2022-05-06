@@ -3,7 +3,7 @@ const path = require("path");
 
 const app = express();
 const server = require("http").createServer(app); //Define o protocolo HTTP
-const io = require("socket.io")(server); //Define o protocolo do WebSocket com base no HTTP
+const io = require("socket.io")(server, { maxHttpBufferSize: 1e8 }); //Define o protocolo do WebSocket com base no HTTP
 
 app.use(express.static(path.join(__dirname, "public"))); //Aqui ficarão todos os arquivos publicos utilizados pela aplicação
 app.set("views", path.join(__dirname, "public")); //Aqui é definido para o node utilizar as views como HTML e não como EJS
