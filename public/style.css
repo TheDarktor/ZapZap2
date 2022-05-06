@@ -17,7 +17,15 @@ body {
   flex-direction: column;
 }
 
-input {
+#messageInput {
+  width: 400px;
+  border: 1px solid #ddd;
+  height: 50px;
+  padding: 0 20px;
+  font-size: 14px;
+}
+
+#userInput {
   width: 600px;
   border: 1px solid #ddd;
   height: 50px;
@@ -25,16 +33,17 @@ input {
   font-size: 14px;
 }
 
-#submitMessageButton {
-  width: 400px;
-  height: 50px;
+.chatButtons {
+  width: 40px;
+  height: 40px;
   font-size: 14px;
+  border: none;
   background: #069;
   text-align: center;
-  line-height: 50px;
   font-weight: bold;
   color: #fff;
-  margin-top: 10px;
+  margin: 5px;
+  border-radius: 180px;
 }
 
 .messages {
@@ -46,10 +55,9 @@ input {
   overflow-y: scroll;
 }
 
-#div-SubmitTools {
+#div-Submit {
   display: flex;
-  align-items: center;
-  width: 500px;
+  width: 600px;
 }
 
 #uploadImageButton {
