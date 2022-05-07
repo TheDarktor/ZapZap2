@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+  background-color: #292929 !important;
 }
 
 * {
@@ -18,17 +19,12 @@ body {
 }
 
 #messageInput {
-  width: 400px;
-  border: 1px solid #ddd;
-  height: 50px;
+  width: 70%;
   padding: 0 20px;
   font-size: 14px;
 }
 
 #userInput {
-  width: 600px;
-  border: 1px solid #ddd;
-  height: 50px;
   padding: 0 20px;
   font-size: 14px;
 }
@@ -38,7 +34,7 @@ body {
   height: 40px;
   font-size: 14px;
   border: none;
-  background: #069;
+  background: darkslategray;
   text-align: center;
   font-weight: bold;
   color: #fff;
@@ -46,18 +42,27 @@ body {
   border-radius: 180px;
 }
 
+.chatinputs {
+  width: 70%;
+  height: 50px;
+  border-radius: 180px;
+  background: darkslategray;
+  border: none;
+}
+
 .messages {
-  width: 600px;
-  height: 400px;
+  width: 70%;
+  height: 70%;
   margin: 20px 0;
-  border: 1px solid #ddd;
+  border: 1px solid darkslategray;
   padding: 20px;
   overflow-y: scroll;
 }
 
 #div-Submit {
   display: flex;
-  width: 600px;
+  width: 70%;
+  justify-content: center;
 }
 
 #uploadImageButton {
