@@ -19,6 +19,10 @@ let messages = []; //Array responsável por armazenar todas as mensagens
 io.on("connection", (socket) => {
   socket.emit("previousMessages", messages);
 
+  socket.on("returnUpdatedMessages", () => {
+    socket.emit("previousMessages", messages);
+  });
+
   socket.on("sendMessage", (data) => {
     messages.push(data);
     socket.broadcast.emit("receivedMessage", data);

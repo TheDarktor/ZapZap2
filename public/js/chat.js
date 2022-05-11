@@ -1,32 +1,64 @@
 var socket = io("http://localhost:3000");
 
-function renderMessage(message) {
-  if (message.image != "") {
-    $(".messages").append(
-      '<div class="message">' +
-        message.author +
-        "<strong></strong>: " +
-        message.message +
-        "<br>" +
-        "<img src=" +
-        message.image +
-        " width='64px' height='64px'>" +
-        "</div>"
-    );
+function renderMessage(message, authorname) {
+  if (message.author == authorname) {
+    if (message.image != "") {
+      $(".chat-messages").append(
+        '<div class="speech half-l">' +
+          "<h6><strong>" +
+          message.author +
+          "</strong></h6>" +
+          message.message +
+          "<br><br>" +
+          "<img src=" +
+          message.image +
+          " width='auto' height='64px'>" +
+          "</div>"
+      );
+    } else {
+      $(".chat-messages").append(
+        '<div class="speech half-l">' +
+          "<h6><strong>" +
+          message.author +
+          "</strong></h6>" +
+          message.message +
+          "</div>"
+      );
+    }
   } else {
-    $(".messages").append(
-      '<div class="message">' +
-        message.author +
-        "<strong></strong>: " +
-        message.message +
-        "</div>"
-    );
+    if (message.image != "") {
+      $(".chat-messages").append(
+        '<div class="speech half-r" style="margin-left:50%">' +
+          "<h6><strong>" +
+          message.author +
+          "</strong></h6>" +
+          message.message +
+          "<br><br>" +
+          "<img src=" +
+          message.image +
+          " width='auto' height='64px'>" +
+          "</div>"
+      );
+    } else {
+      $(".chat-messages").append(
+        '<div class="speech half-r" style="margin-left:50%">' +
+          "<h6><strong>" +
+          message.author +
+          "</strong></h6>" +
+          message.message +
+          "</div>"
+      );
+    }
   }
+
+  let chatMessages = document.querySelector(".chat-messages");
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 socket.on("previousMessages", function (messages) {
   for (message of messages) {
-    renderMessage(message);
+    var actualAuthor = $("input[name=username]").val();
+    renderMessage(message, actualAuthor);
   }
 });
 
@@ -47,7 +79,7 @@ $("#chat").submit(function (event) {
       image: uploadedImage,
     };
 
-    renderMessage(messageObject);
+    renderMessage(messageObject, author);
 
     socket.emit("sendMessage", messageObject);
 
@@ -68,4 +100,15 @@ imageInput.addEventListener("change", function () {
     uploadImageModal.hide();
   });
   reader.readAsDataURL(this.files[0]);
+});
+
+usernameInput = document.getElementById("userInput");
+usernameInputTimeout = null;
+
+usernameInput.addEventListener("keyup", function () {
+  clearTimeout(usernameInputTimeout);
+  usernameInputTimeout = setTimeout(function () {
+    $(".chat-messages").empty();
+    socket.emit("returnUpdatedMessages", true);
+  }, 1000);
 });
